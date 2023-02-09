@@ -32,13 +32,13 @@ phases:
         --container-image-uri "${CONTAINER_URI}" \
         --initial-instance-count "${INITIAL_INSTANCE_COUNT}" \
         --instance-type "${INSTANCE_TYPE}" \
+        --s3-bucket "$ARTIFACT_BUCKET"
       # - |
       #   python build.py \
       #   --model-execution-role "$MODEL_EXECUTION_ROLE_ARN" \
       #   --model-package-group-name "$SOURCE_MODEL_PACKAGE_GROUP_NAME" \
       #   --sagemaker-project-id "$SAGEMAKER_PROJECT_ID" \
       #   --sagemaker-project-name "$SAGEMAKER_PROJECT_NAME" \
-      #   --s3-bucket "$ARTIFACT_BUCKET" \
       #   --export-staging-config $EXPORT_TEMPLATE_STAGING_CONFIG \
       #   --export-prod-config $EXPORT_TEMPLATE_PROD_CONFIG \
 
