@@ -59,7 +59,7 @@ def get_approved_package(model_package_group_name):
         raise Exception(error_message)
 
 
-def extend_config(args, model_package_arn, stage_config):
+def extend_config(args, model_data_location, stage_config):
     """
     Extend the stage configuration with additional parameters and tags based.
     """
@@ -73,7 +73,7 @@ def extend_config(args, model_package_arn, stage_config):
         "SageMakerProjectName": args.sagemaker_project_name,
         "ModelDataLocation": model_data_location,
         "ContainerImageURI": args.container_image_uri,
-        "ModelPackageName": model_package_arn,
+        # "ModelPackageName": model_package_arn,
         "ModelExecutionRoleArn": args.model_execution_role,
         "DataCaptureUploadPath": "s3://" + args.s3_bucket + '/datacapture-' + stage_config["Parameters"]["StageName"],
     }
@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
     # Write the staging config
     with open(args.import_staging_config, "r") as f:
-        staging_config = extend_config(args, model_package_arn, json.load(f))
+        staging_config = extend_config(args, model_data_location, json.load(f))
     logger.debug("Staging config: {}".format(json.dumps(staging_config, indent=4)))
     with open(args.export_staging_config, "w") as f:
         json.dump(staging_config, f, indent=4)
@@ -175,7 +175,7 @@ if __name__ == "__main__":
 
     # Write the prod config for code pipeline
     with open(args.import_prod_config, "r") as f:
-        prod_config = extend_config(args, model_package_arn, json.load(f))
+        prod_config = extend_config(args, model_data_location, json.load(f))
     logger.debug("Prod config: {}".format(json.dumps(prod_config, indent=4)))
     with open(args.export_prod_config, "w") as f:
         json.dump(prod_config, f, indent=4)
