@@ -12,9 +12,12 @@ Parameters:
   ModelExecutionRoleArn:
     Type: String
     Description: Execution role used for deploying the model.
-  ModelPackageName:
+  ModelDataLocation:
     Type: String
-    Description: The trained Model Package Name
+    Description: The model.tar.gz file location in S3.
+  ContainerImageURI:
+    Type: String
+    Description: The MLflow inference container image URI.
   StageName:
     Type: String
     Description:
@@ -47,7 +50,8 @@ Resources:
     Type: AWS::SageMaker::Model
     Properties:
       Containers:
-         - ModelPackageName: !Ref ModelPackageName
+        - Image: !Ref ContainerImageURI
+          ModelDataUrl: !Ref ModelDataLocation
       ExecutionRoleArn: !Ref ModelExecutionRoleArn
 
   EndpointConfig:

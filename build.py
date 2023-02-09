@@ -71,6 +71,8 @@ def extend_config(args, model_package_arn, stage_config):
     # Create new params and tags
     new_params = {
         "SageMakerProjectName": args.sagemaker_project_name,
+        "ModelDataLocation": model_data_location,
+        "ContainerImageURI": args.container_image_uri,
         "ModelPackageName": model_package_arn,
         "ModelExecutionRoleArn": args.model_execution_role,
         "DataCaptureUploadPath": "s3://" + args.s3_bucket + '/datacapture-' + stage_config["Parameters"]["StageName"],
@@ -124,15 +126,17 @@ def create_cfn_params_tags_file(config, export_params_file, export_tags_file):
     with open(export_tags_file, "w") as f:
         json.dump(tags, f, indent=4)
 
+def
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--log-level", type=str, default=os.environ.get("LOGLEVEL", "INFO").upper())
     parser.add_argument("--model-execution-role", type=str, required=True)
-    parser.add_argument("--model-package-group-name", type=str, required=True)
+    # parser.add_argument("--model-package-group-name", type=str, required=True)
     parser.add_argument("--sagemaker-project-id", type=str, required=True)
     parser.add_argument("--sagemaker-project-name", type=str, required=True)
     parser.add_argument("--sagemaker-project-arn", type=str, required=False)
-    parser.add_argument("--s3-bucket", type=str, required=True)
+    # parser.add_argument("--s3-bucket", type=str, required=True)
     parser.add_argument("--import-staging-config", type=str, default="staging-config.json")
     parser.add_argument("--import-prod-config", type=str, default="prod-config.json")
     parser.add_argument("--export-staging-config", type=str, default="staging-config-export.json")
@@ -142,6 +146,10 @@ if __name__ == "__main__":
     parser.add_argument("--export-prod-params", type=str, default="prod-params-export.json")
     parser.add_argument("--export-prod-tags", type=str, default="prod-tags-export.json")
     parser.add_argument("--export-cfn-params-tags", type=bool, default=False)
+    parser.add_argument("--tracking-uri", type=str, required=True)
+    parser.add_argument("--model-name", type=str, required=True)
+    parser.add_argument("--model-version", type=str, required=True)
+    parser.add_argument("--container-image-uri", type=str, required=True)
     args, _ = parser.parse_known_args()
 
     # Configure logging to output the line number and message
@@ -149,7 +157,14 @@ if __name__ == "__main__":
     logging.basicConfig(format=log_format, level=args.log_level)
 
     # Get the latest approved package
-    model_package_arn = get_approved_package(args.model_package_group_name)
+    # model_package_arn = get_approved_package(args.model_package_group_name)
+    mlflow_handler = MLflowHandler(
+        tracking_uri=args.tracking_uri,
+        model_name=args.model_name,
+        model_version=args.model_version
+    )
+    # create and upload a tar.gz to S3 from the MLflow model version.
+    model_data_location = mlflow_handler.prepare_sagemaker_model()
 
     # Write the staging config
     with open(args.import_staging_config, "r") as f:
