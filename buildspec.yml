@@ -11,9 +11,9 @@ phases:
   pre_build:
     commands:
       - TRACKING_URI="http://mlflow-lb-909049553.us-west-2.elb.amazonaws.com"
-      - CONTAINER_URI="439162431295.dkr.ecr.us-west-2.amazonaws.com/mlflow-pyfunc:2.1.1"
       - MODEL_NAME="sagemaker-mlflow-iris-model"
-      - MODEL_VERSION="2"
+      - MODEL_VERSION="4"
+      - CONTAINER_URI="439162431295.dkr.ecr.us-west-2.amazonaws.com/mlflow-pyfunc:2.1.1"
       - INITIAL_INSTANCE_COUNT="1"
       - INSTANCE_TYPE="ml.m5.xlarge"
 
