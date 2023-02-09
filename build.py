@@ -5,6 +5,7 @@ import os
 
 import boto3
 from botocore.exceptions import ClientError
+from mlflow_handler import MLflowHandler
 
 logger = logging.getLogger(__name__)
 sm_client = boto3.client("sagemaker")
