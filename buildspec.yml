@@ -11,9 +11,9 @@ phases:
   pre_build:
     commands:
       - TRACKING_URI="http://mlflow-lb-909049553.us-west-2.elb.amazonaws.com"
-      - MODEL_NAME="Model-with-Iris"
-      - MODEL_VERSION="1"
       - CONTAINER_URI="439162431295.dkr.ecr.us-west-2.amazonaws.com/mlflow-pyfunc:2.1.1"
+      - MODEL_NAME="sagemaker-mlflow-iris-model"
+      - MODEL_VERSION="2"
       - INITIAL_INSTANCE_COUNT="1"
       - INSTANCE_TYPE="ml.m5.xlarge"
 
@@ -32,7 +32,7 @@ phases:
         --container-image-uri "${CONTAINER_URI}" \
         --initial-instance-count "${INITIAL_INSTANCE_COUNT}" \
         --instance-type "${INSTANCE_TYPE}" \
-        --s3-bucket "$ARTIFACT_BUCKET"
+        --s3-bucket "${ARTIFACT_BUCKET}"
       # - |
       #   python build.py \
       #   --model-execution-role "$MODEL_EXECUTION_ROLE_ARN" \
