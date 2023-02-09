@@ -126,8 +126,6 @@ def create_cfn_params_tags_file(config, export_params_file, export_tags_file):
     with open(export_tags_file, "w") as f:
         json.dump(tags, f, indent=4)
 
-def
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--log-level", type=str, default=os.environ.get("LOGLEVEL", "INFO").upper())
