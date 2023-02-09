@@ -6,7 +6,7 @@ phases:
       python: 3.8
     commands:
       # Upgrade AWS CLI to the latest version
-      - pip install --upgrade --force-reinstall "mlflow==2.1.1" "sagemaker==2.45.0"
+      - pip install --upgrade --force-reinstall "mlflow==2.1.1" "sagemaker==2.45.0" "protobuf==3.20.1"
 
   pre_build:
     commands:
